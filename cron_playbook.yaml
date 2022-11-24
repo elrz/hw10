@@ -1,0 +1,23 @@
+- name: cronjob
+  hosts: all
+  become: yes
+ 
+  tasks:
+    - name: Get cron job
+      shell: crontab -l
+      register: result
+
+    - name: Print all cron jobs
+      debug:
+        var: result.stdout
+
+    - name: Create cron jobs
+      ansible.builtin.cron:
+        name: "Curl"
+        job: Curl
+      when: result.stdout.find('Curl') == -1
+
+
+ 
+
+ 
